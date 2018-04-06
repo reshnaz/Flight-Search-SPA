@@ -1,0 +1,9 @@
+/* Add application styles & imports to this file! */
+
+@import "~nouislider/distribute/nouislider.min.css";
+body {
+  background-image: url("assets/images/airport.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: block;
+}

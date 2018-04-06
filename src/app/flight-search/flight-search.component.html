@@ -1,0 +1,81 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">FLIGHT SEARCH ENGINE</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid" id="container">
+  <div class="search-panel col-1">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a data-toggle="tab" href="#search-form" (click)="displayRetField=false">One Way</a>
+      </li>
+      <li>
+        <a data-toggle="tab" href="#search-form" (click)="displayRetField=true">Return</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="search-form" class="tab-pane fade in active">
+        <div class="ow-form">
+          <form #f="ngForm" id="owForm" novalidate autocomplete="off" (ngSubmit)="searchFlights(f.value)">
+            <div class="form-group">
+              <!-- <input type="text" class="form-control" [(ngModel)]="flight.OriginDestination.Origin" id="originCity" name="originCity" placeholder="Enter Origin City"
+                #originCity> -->
+              <select class="form-control" [(ngModel)]="flight.OriginDestination.Origin" id="originCity" name="originCity" #originCity>
+                <option value="" disabled selected>Enter Origin City</option>
+                <option value="BLR">Bangalore</option>
+                <option value="MAA">Chennai</option>
+                <option value="DEL">Delhi</option>
+                <option value="HYD">Hyderabad</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <!--               <input type="text" class="form-control" [(ngModel)]="flight.OriginDestination.Destination" id="destCity" name="destCity"
+                placeholder="Enter Destination City" #destCity> -->
+              <select class="form-control" [(ngModel)]="flight.OriginDestination.Destination" id="destCity" name="destCity" #destCity>
+                <option value="" disabled selected>Enter Destination City</option>
+                <option value="BLR">Bangalore</option>
+                <option value="MAA">Chennai</option>
+                <option value="DEL">Delhi</option>
+                <option value="HYD">Hyderabad</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" [(ngModel)]="flight.OriginDestination.DeptDate" placeholder="Departure Date" onfocus="(this.type='date')"
+                id="deprtDt" name="deprtDt" #deprtDt>
+            </div>
+            <div *ngIf="displayRetField" class="form-group">
+              <input type="text" class="form-control" [(ngModel)]="flight.OriginDestination.RetDate" placeholder="Return Date" onfocus="(this.type='date')"
+                id="retDt" name="retDt" #retDt>
+            </div>
+            <div class="form-group">
+              <input type="number" class="form-control" [(ngModel)]="flight.SeatsAvailable" id="passCount" name="passCount" placeholder="Passengers"
+                #passCount>
+            </div>
+            <div class="form-group">
+              <input type="submit" class="form-control" class="btn btn-primary btn-block" value="Submit" [disabled]="f.invalid">
+            </div>
+            <div class="form-group" class="ow-slider">
+              Refine Flight Search
+              <nouislider name="Pricerange" [connect]="true" [min]="0" [max]="10000" [step]="500" [(ngModel)]="someRange" (ngModelChange)="onChange($event)"></nouislider>
+              Price Range: {{someRange[0]}} to {{someRange[1]}}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="result-panel col-2">
+    <div *ngIf="noResults(); else flightsAvailable" class="results">
+      <h3 style="color:red; text-align:center">No results to display</h3>
+    </div>
+    <ng-template #flightsAvailable>
+      <!-- Conditional display of table based on length of input array -->
+      <div *ngIf="flightArr?.length > 0" class="results"></div>
+      <app-flight-search-result [flightResults]="flightArr" [tripType]="displayRetField"></app-flight-search-result>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<h3 style="color:whitesmoke; text-align:center">Search Results</h3>
+<hr/>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="table-resposive">
+      <table class="table table-striped">
+        <tbody>
+          <!-- Loop through input array -->
+          <tr *ngFor="let result of resultArr; let i = index">
+            <td id="fltRes">
+              <div class="main">
+                <div class="col-details">
+                  <div class="col-toDetails">
+                    {{result?.flight1?.FlightCode}}
+                    <br> {{result?.flight1?.OriginDestination.Origin}} > {{result?.flight1?.OriginDestination.Destination}}
+                    <br> Depart: {{result?.flight1?.OriginDestination.DeptDate | date:'shortTime'}}
+                    <br> Arrive: {{result?.flight1?.OriginDestination.ArrDate | date:'shortTime'}}
+                  </div>
+                  <div *ngIf="tripType" class="col-froDetails">
+                    {{result?.flight2?.FlightCode}}
+                    <br> {{result?.flight2?.OriginDestination.Origin}} > {{result?.flight2?.OriginDestination.Destination}}
+                    <br> Depart: {{result?.flight2?.OriginDestination.DeptDate | date:'shortTime'}}
+                    <br> Arrive: {{result?.flight2?.OriginDestination.ArrDate | date:'shortTime'}}
+                  </div>
+                  <div class="col-bookButton">
+                    <span *ngIf="tripType; else ow">TOTAL FARE: {{result?.flight1?.FareDetails + result?.flight2?.FareDetails | currency:'INR'}}</span>
+                    <ng-template #ow>
+                      <span>TOTAL FARE: {{result?.flight1?.FareDetails | currency:'INR'}}</span>
+                    </ng-template>
+                    <button class="btn btn-primary">Book this flight</button>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
