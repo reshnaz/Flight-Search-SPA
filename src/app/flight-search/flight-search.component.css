@@ -71,3 +71,21 @@
   border: 1px solid #ddd;
   margin-top: 2%;
 }
+
+/* Here we use angular validation CSS classes */
+
+/* Field borders turn red when touched and invalid */
+
+input.ng-touched.ng-invalid,
+select.ng-touched.ng-invalid {
+  border-color: red;
+  border-width: 2px;
+}
+
+/* Field borders turn green when touched and invalid */
+
+input.ng-touched.ng-valid,
+select.ng-touched.ng-valid {
+  border-color: green;
+  border-width: 2px;
+}

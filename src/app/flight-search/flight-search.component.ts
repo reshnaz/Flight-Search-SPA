@@ -26,6 +26,7 @@ export class FlightSearchComponent implements OnInit {
     // Initializing values in flight model
     this.someRange = [1000, 5000];
     this.flight = {
+      id: null,
       FlightCode: "",
       SeatsAvailable: null,
       OriginDestination: { Origin: "", Destination: "", DeptDate: null, ArrDate: null },
@@ -40,12 +41,14 @@ export class FlightSearchComponent implements OnInit {
       this.flightInput = [
         // When the trip type is two-way
         {
+          id: null,
           FlightCode: "",
           SeatsAvailable: vals.passCount,
           OriginDestination: { Origin: vals.originCity, Destination: vals.destCity, DeptDate: vals.deprtDt, ArrDate: null },
           FareDetails: null
         },
         {
+          id: null,
           FlightCode: "",
           SeatsAvailable: vals.passCount,
           OriginDestination: { Origin: vals.destCity, Destination: vals.originCity, DeptDate: vals.retDt, ArrDate: null },
@@ -56,6 +59,7 @@ export class FlightSearchComponent implements OnInit {
       this.flightInput = [
         // When trip type is one way
         {
+          id: null,
           FlightCode: "",
           SeatsAvailable: vals.passCount,
           OriginDestination: { Origin: vals.originCity, Destination: vals.destCity, DeptDate: vals.deprtDt, ArrDate: null },
@@ -64,7 +68,7 @@ export class FlightSearchComponent implements OnInit {
       ]
     }
     // Service function called to add person details to array
-    this.flightArr = this._flightService.getFlightDetails(this.flightInput);
+    this.flightArr = this._flightService.getFlightDetails(this.flightInput, this.someRange[0], this.someRange[1]);
 
   }
 
@@ -77,23 +81,7 @@ export class FlightSearchComponent implements OnInit {
 
   // Price range slider function
   onChange($event) {
-    for (let i = 0; i < this.flightArr[0].length; i++) {
-      if (!((this.flightArr[0][i].FareDetails >= this.someRange[0]) && (this.flightArr[0][i].FareDetails <= this.someRange[1]))) {
-        if (i !== -1) {
-          // Remove flight details that don't satify range
-          this.removed = this.flightArr[0].splice(i, 1);
-        }
-      }
-    }
-
-    if (this.removed.length !== 0) {
-      for (let x = 0; x < this.removed.length; x++) {
-        if ((this.removed[x].FareDetails >= this.someRange[0]) && (this.removed[x].FareDetails <= this.someRange[1])) {
-          // Add back flight details that satify range
-          this.flightArr[0].push(this.removed[x]);
-        }
-      }
-    }
+    this.flightArr = this._flightService.getFlightDetails(this.flightInput, this.someRange[0], this.someRange[1]);
   }
 
 }

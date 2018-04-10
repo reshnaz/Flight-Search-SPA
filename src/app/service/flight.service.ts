@@ -24,7 +24,8 @@ export class FlightService {
   constructor(private http: HttpClient, public datepipe: DatePipe) { }
 
   /** GET flight details from the server */
-  getFlightDetails(flt: FlightModel[]): Array<FlightModel[]> {
+  getFlightDetails(flt: FlightModel[], lower, upper): Array<FlightModel[]> {
+    this.flightResults = [];
     this.toFlightResults = [];
     this.froFlightResults = [];
     this.http.get<FlightModel[]>(this.flightsUrl)
@@ -41,7 +42,8 @@ export class FlightService {
             this.deptDt2 = this.datepipe.transform(od2.DeptDate, 'yyyy-MM-dd');
             // Check conditions that satisfy user input to flight details in DB
             if (od1.Origin == od2.Origin && od1.Destination == od2.Destination &&
-              this.deptDt1 === this.deptDt2 && this.allFlights[i].SeatsAvailable > flt[f].SeatsAvailable) {
+              this.deptDt1 === this.deptDt2 && this.allFlights[i].SeatsAvailable > flt[f].SeatsAvailable
+              && this.allFlights[i].FareDetails >= lower && this.allFlights[i].FareDetails <= upper) {
               if (f === 0) {
                 this.toFlightResults.push(this.allFlights[i]);
               } else {
@@ -53,7 +55,7 @@ export class FlightService {
         this.flightResults[0] = this.toFlightResults;
         this.flightResults[1] = this.froFlightResults;
       });
-      // Returns combined to flight and fro flight details
+    // Returns combined to flight and fro flight details
     return this.flightResults;
   }
 }
